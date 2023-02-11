@@ -36,11 +36,17 @@ func getPosts(resp http.ResponseWriter, req *http.Request) {
 
 func addPost(resp http.ResponseWriter, req *http.Request) {
 	resp.Header().Set("Content-Type", "application/json")
-	result, err := json.Marshal(posts)
+	var post Post
+	err := json.NewDecoder(req.Body).Decode(&post)
 	if err != nil {
 		resp.WriteHeader(http.StatusInternalServerError)
-		resp.Write([]byte(`{"error": "Error marshalling the posts array"}`))
+		resp.Write([]byte(`{"error": "Error marshalling the request"}`))
+		return
 	}
+	post.Id = len(posts) + 1
+	posts = append(posts, post)
 	resp.WriteHeader(http.StatusOK)
+	result, _ := json.Marshal(posts)
+
 	resp.Write(result)
 }
