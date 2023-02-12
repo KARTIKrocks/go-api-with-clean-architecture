@@ -10,11 +10,11 @@ import (
 // Config is the server configuration structure.
 // all fields will be filled with environment variables.
 type Config struct {
-	ServerHost    string `mapstructure:"SERVER_HOST"` // address that server will listening on
-	MongoUser     string `mapstructure:"MONGO_USER"` // mongo db username
+	ServerHost    string `mapstructure:"SERVER_HOST"`    // address that server will listening on
+	MongoUser     string `mapstructure:"MONGO_USER"`     // mongo db username
 	MongoPassword string `mapstructure:"MONGO_PASSWORD"` // mongo db password
-	MongoHost     string `mapstructure:"MONGO_HOST"` // host that mongo db listening on
-	MongoPort     string `mapstructure:"MONGO_PORT"` // port that mongo db listening on
+	MongoHost     string `mapstructure:"MONGO_HOST"`     // host that mongo db listening on
+	MongoPort     string `mapstructure:"MONGO_PORT"`     // port that mongo db listening on
 }
 
 // initialize will read environment variables and save them in config structure fields

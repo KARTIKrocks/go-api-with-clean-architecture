@@ -3,6 +3,7 @@ module github.com/KARTIKrocks/go-api-with-clean-architecture
 go 1.19
 
 require (
+	github.com/go-chi/chi/v5 v5.0.8
 	github.com/gorilla/mux v1.8.0
 	github.com/spf13/viper v1.15.0
 	go.mongodb.org/mongo-driver v1.11.1
