@@ -1,0 +1,17 @@
+version: '3.6'
+services:
+  mongodb:
+    image: mongo
+    container_name: gomongoapi-clean-architecture
+    restart: always
+    env_file:
+      - ./mongo.env
+
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongodb:/data/db
+      
+volumes:
+  mongodb:
+    driver: local
