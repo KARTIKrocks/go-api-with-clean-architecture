@@ -11,7 +11,7 @@ import (
 )
 
 var (
-	PostRepository repository.PostRepository = repository.NewMongoRepository(repository.InitDB())
+	PostRepository repository.PostRepository = repository.NewMongoRepository(repository.InitMongoDB())
 	postService    service.PostService       = service.NewPostService(PostRepository)
 	PostController controller.PostController = controller.NewPostController(postService)
 	httpRouter     router.Router             = router.NewMuxRouter()

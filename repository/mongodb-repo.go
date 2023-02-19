@@ -26,7 +26,7 @@ const (
 	colName = "posts"
 )
 
-func InitDB() *mongo.Collection {
+func InitMongoDB() *mongo.Collection {
 	conf, err := config.LoadConfig("./")
 	if err != nil {
 		log.Fatalf("Error while reading config file: %s", err)
