@@ -17,27 +17,21 @@ type Config struct {
 	MongoPort     string `mapstructure:"MONGO_PORT"`     // port that mongo db listening on
 }
 
-// initialize will read environment variables and save them in config structure fields
-func (config *Config) initialize() {
-	// read environment variables
-	// config.ServerHost = os.Getenv("server_host")
-	// config.MongoUser = os.Getenv("mongo_user")
-	// config.MongoPassword = os.Getenv("mongo_password")
-	// config.MongoHost = os.Getenv("mongo_host")
-	// config.MongoPort = os.Getenv("mongo_port")
-
-	viper.AddConfigPath("./")
+// LoadConfig will load environment variables and save them in config structure fields
+func LoadConfig(path string) (config Config, err error) {
+	viper.AddConfigPath(path)
 	viper.SetConfigType("env")
 	viper.SetConfigName("mongo")
 
 	viper.AutomaticEnv()
 
-	err := viper.ReadInConfig()
+	err = viper.ReadInConfig()
 	if err != nil {
 		log.Fatalf("Error while reading config file: %s", err)
 	}
 
 	err = viper.Unmarshal(&config)
+	return
 }
 
 // MongoURI will generate mongo db connect uri
@@ -48,11 +42,4 @@ func (config *Config) MongoURI() string {
 		config.MongoHost,
 		config.MongoPort,
 	)
-}
-
-// NewConfig will create and initialize config struct
-func NewConfig() *Config {
-	config := new(Config)
-	config.initialize()
-	return config
 }

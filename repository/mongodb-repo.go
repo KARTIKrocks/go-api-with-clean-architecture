@@ -13,19 +13,12 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-type repo struct{}
-
-// NewMongoRepository creates a new repo
-func NewMongoRepository() PostRepository {
-	return &repo{}
+type repo struct {
+	collection *mongo.Collection
 }
 
-// MOST IMPORTANT
 var (
-	collection       *mongo.Collection
-	conf             = config.NewConfig()
-	connectionString = conf.MongoURI()
-	ctx              = context.Background()
+	collection *mongo.Collection
 )
 
 const (
@@ -33,7 +26,14 @@ const (
 	colName = "posts"
 )
 
-func init() {
+func InitDB() *mongo.Collection {
+	conf, err := config.LoadConfig("./")
+	if err != nil {
+		log.Fatalf("Error while reading config file: %s", err)
+	}
+	connectionString := conf.MongoURI()
+	ctx := context.Background()
+
 	// client option
 	clientOption := options.Client().ApplyURI(connectionString)
 
@@ -45,10 +45,21 @@ func init() {
 
 	collection = client.Database(dbName).Collection(colName)
 	fmt.Println("mongo db connection success")
+	return collection
 }
 
+// NewMongoRepository creates a new repo
+func NewMongoRepository(coll *mongo.Collection) PostRepository {
+	return &repo{collection: coll}
+}
+
+// MOST IMPORTANT
+var (
+	ctx = context.Background()
+)
+
 func (r *repo) Save(post *models.Post) (*models.Post, error) {
-	inserted, err := collection.InsertOne(context.Background(), post)
+	inserted, err := r.collection.InsertOne(ctx, post)
 
 	if err != nil {
 		log.Fatalf("failed adding a new post: %v", err)
@@ -59,8 +70,7 @@ func (r *repo) Save(post *models.Post) (*models.Post, error) {
 }
 
 func (r *repo) FindAll() ([]primitive.M, error) {
-
-	cursor, err := collection.Find(context.Background(), bson.D{{}})
+	cursor, err := r.collection.Find(ctx, bson.D{{}})
 	if err != nil {
 		log.Fatalf("problem occured: %v", err)
 	}
@@ -74,7 +84,7 @@ func (r *repo) FindAll() ([]primitive.M, error) {
 		}
 		posts = append(posts, post)
 	}
-	defer cursor.Close(context.Background())
+	defer cursor.Close(ctx)
 
 	return posts, nil
 }
