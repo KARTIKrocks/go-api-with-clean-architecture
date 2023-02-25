@@ -6,6 +6,11 @@ import (
 )
 
 type PostRepository interface {
-	Save(post *models.Post) (*models.Post, error)
+	Save(post *models.Todo) (*models.Todo, error)
 	FindAll() ([]primitive.M, error)
+	DeleteAll() (int64, error)
+	DeleteOne(id string) (string, error)
+	CompleteTodo(title string) error
+	Get(id string) (*models.Todo, error)
+	// Update(id string, todo *models.Todo) error
 }

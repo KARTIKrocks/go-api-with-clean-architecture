@@ -9,37 +9,36 @@ import (
 )
 
 type muxRouter struct {
+	muxRouter *mux.Router
 }
 
-var (
-	muxDispatcher = mux.NewRouter()
-)
-
-func NewMuxRouter() Router {
-	return &muxRouter{}
+func NewMuxRouter(router *mux.Router) Router {
+	return &muxRouter{
+		muxRouter: router,
+	}
 }
 
 func (m *muxRouter) GET(uri string, f func(w http.ResponseWriter, r *http.Request)) {
-	muxDispatcher.HandleFunc(uri, f).Methods("GET")
+	m.muxRouter.HandleFunc(uri, f).Methods("GET")
 }
 
 func (m *muxRouter) POST(uri string, f func(w http.ResponseWriter, r *http.Request)) {
-	muxDispatcher.HandleFunc(uri, f).Methods("POST")
+	m.muxRouter.HandleFunc(uri, f).Methods("POST")
 }
 
 func (m *muxRouter) PUT(uri string, f func(w http.ResponseWriter, r *http.Request)) {
-	muxDispatcher.HandleFunc(uri, f).Methods("PUT")
+	m.muxRouter.HandleFunc(uri, f).Methods("PUT")
 }
 
 func (m *muxRouter) PATCH(uri string, f func(w http.ResponseWriter, r *http.Request)) {
-	muxDispatcher.HandleFunc(uri, f).Methods("PATCH")
+	m.muxRouter.HandleFunc(uri, f).Methods("PATCH")
 }
 
 func (m *muxRouter) DELETE(uri string, f func(w http.ResponseWriter, r *http.Request)) {
-	muxDispatcher.HandleFunc(uri, f).Methods("DELETE")
+	m.muxRouter.HandleFunc(uri, f).Methods("DELETE")
 }
 
 func (m *muxRouter) SERVE(port string) {
 	fmt.Printf("Mux HTTP server running on port %v", port)
-	log.Fatal(http.ListenAndServe(port, muxDispatcher))
+	log.Fatal(http.ListenAndServe(port, m.muxRouter))
 }

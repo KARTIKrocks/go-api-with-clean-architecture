@@ -9,37 +9,36 @@ import (
 )
 
 type chiRouter struct {
+	chiRouter *chi.Mux
 }
 
-var (
-	chiDispatcher = chi.NewRouter()
-)
-
-func NewChiRouter() Router {
-	return &chiRouter{}
+func NewChiRouter(router *chi.Mux) Router {
+	return &chiRouter{
+		chiRouter: router,
+	}
 }
 
 func (m *chiRouter) GET(uri string, f func(w http.ResponseWriter, r *http.Request)) {
-	chiDispatcher.Get(uri, f)
+	m.chiRouter.Get(uri, f)
 }
 
 func (m *chiRouter) POST(uri string, f func(w http.ResponseWriter, r *http.Request)) {
-	chiDispatcher.Post(uri, f)
+	m.chiRouter.Post(uri, f)
 }
 
 func (m *chiRouter) PUT(uri string, f func(w http.ResponseWriter, r *http.Request)) {
-	chiDispatcher.Put(uri, f)
+	m.chiRouter.Put(uri, f)
 }
 
 func (m *chiRouter) PATCH(uri string, f func(w http.ResponseWriter, r *http.Request)) {
-	chiDispatcher.Patch(uri, f)
+	m.chiRouter.Patch(uri, f)
 }
 
 func (m *chiRouter) DELETE(uri string, f func(w http.ResponseWriter, r *http.Request)) {
-	chiDispatcher.Delete(uri, f)
+	m.chiRouter.Delete(uri, f)
 }
 
 func (m *chiRouter) SERVE(port string) {
 	fmt.Printf("CHi HTTP server running on port %v", port)
-	log.Fatal(http.ListenAndServe(port, chiDispatcher))
+	log.Fatal(http.ListenAndServe(port, m.chiRouter))
 }

@@ -1,22 +1,21 @@
 package router
 
 import (
-	"fmt"
-	"log"
+	// "fmt"
+	// "log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
 type ginRouter struct {
+	ginRouter *gin.Engine
 }
 
-var (
-	ginDispatcher = gin.Default()
-)
-
-func NewGinRouter() Router {
-	return &ginRouter{}
+func NewGinRouter(router *gin.Engine) Router {
+	return &ginRouter{
+		ginRouter: router,
+	}
 }
 
 func (m *ginRouter) GET(uri string, f func(w http.ResponseWriter, r *http.Request)) {
@@ -40,6 +39,6 @@ func (m *ginRouter) DELETE(uri string, f func(w http.ResponseWriter, r *http.Req
 }
 
 func (m *ginRouter) SERVE(port string) {
-	fmt.Printf("CHi HTTP server running on port %v", port)
-	log.Fatal(http.ListenAndServe(port, chiDispatcher))
+	// fmt.Printf("CHi HTTP server running on port %v", port)
+	// log.Fatal(http.ListenAndServe(port, chiDispatcher))
 }
