@@ -1,0 +1,9 @@
+# env file
+mongo.env
+
+# vendor file
+vendor
+
+# IDE file
+.idea
+.vscode
