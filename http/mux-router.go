@@ -40,5 +40,6 @@ func (m *muxRouter) DELETE(uri string, f func(w http.ResponseWriter, r *http.Req
 
 func (m *muxRouter) SERVE(port string) {
 	fmt.Printf("Mux HTTP server running on port %v", port)
+	fmt.Println()
 	log.Fatal(http.ListenAndServe(port, m.muxRouter))
 }

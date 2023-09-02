@@ -13,10 +13,13 @@ func PostRoutes(router router.Router, postController todo.PostController) {
 	})
 
 	router.POST("/todos", postController.AddTodo)
+
 	router.GET("/todos/{id}", postController.GetTodo)
 	router.GET("/todos", postController.GetTodos)
+
 	router.PUT("/todos/{id}", postController.CompleteTodo)
 	// router.PUT("/todos/update/{id}", postController.UpdateTodo)
+
 	router.DELETE("/todos", postController.DeleteTodos)
 	router.DELETE("/todos/{id}", postController.DeleteTodo)
 }
